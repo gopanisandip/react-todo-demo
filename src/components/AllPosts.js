@@ -7,6 +7,7 @@ function AllPosts() {
 
     const [allPosts, setAllPosts] = useState([]);
     const [ogdata, setOGdata] = useState([])
+    const [modify, setModify] = useState("")
 
     const searchvalue = useRef("");
 
@@ -58,11 +59,67 @@ function AllPosts() {
         }
     }
 
+    const handleChange = async (event) => {
+        const vv = event.target.value
+        if (vv) {
+            if (vv === "by-title-asc") {
+                axios.get("http://localhost:4000/posts?_sort=title&_order=asc").then((response) => {
+                    setAllPosts(response.data);
+                    // setOGdata(response.data);
+                });
+            }
+            if (vv === "by-title-desc") {
+                axios.get("http://localhost:4000/posts?_sort=title&_order=desc").then((response) => {
+                    setAllPosts(response.data);
+                    // setOGdata(response.data);
+                });
+            }
+            if (vv === "by-date-create-asc") {
+                axios.get("http://localhost:4000/posts?_sort=createDate&_order=asc").then((response) => {
+                    setAllPosts(response.data);
+                    // setOGdata(response.data);
+                });
+            }
+            if (vv === "by-date-create-desc") {
+                axios.get("http://localhost:4000/posts?_sort=createDate&_order=desc").then((response) => {
+                    setAllPosts(response.data);
+                    // setOGdata(response.data);
+                });
+            }
+            if (vv === "by-date-modified-asc") {
+                axios.get("http://localhost:4000/posts?_sort=modifyDate&_order=asc").then((response) => {
+                    setAllPosts(response.data);
+                    // setOGdata(response.data);
+                });
+            }
+            if (vv === "by-date-modified-desc") {
+                axios.get("http://localhost:4000/posts?_sort=modifyDate&_order=desc").then((response) => {
+                    setAllPosts(response.data);
+                    // setOGdata(response.data);
+                });
+            }
+        }
+    }
+
     return (
         <>
-            <div className="post-search flex">
-                <input type="text" className="search-val" ref={searchvalue} onChange={handleOnChange} placeholder="Search..." />
+            <div className="post-facility flex">
+                <div className="post-search">
+                    <input type="text" className="search-val" ref={searchvalue} onChange={handleOnChange} placeholder="Search..." />
+                </div>
+                <div className="post-sort">
+                    <select onChange={handleChange}>
+                        <option value={""}>--Sort--</option>
+                        <option value={"by-title-asc"}>By title(asc)</option>
+                        <option value={"by-title-desc"}>By title(desc)</option>
+                        <option value={"by-date-create-asc"}>By date created(asc)</option>
+                        <option value={"by-date-create-desc"}>By date created(desc)</option>
+                        <option value={"by-date-modified-asc"}>By date modified(asc)</option>
+                        <option value={"by-date-modified-desc"}>By date modified(desc)</option>
+                    </select>
+                </div>
             </div>
+
             <div className="post-container">
                 {
                     allPosts.length === 0 ?

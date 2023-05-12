@@ -7,10 +7,14 @@ function UpdatePost() {
 
     const postTitle = useRef("");
     const postDesc = useRef("");
+    const createdate = useRef("");
 
     const { id } = useParams();
 
     const navigate = useNavigate();
+
+    let updateDate = new Date()
+    console.log(updateDate.toLocaleString())
 
     // get default data of specific post_ID from API
 
@@ -18,6 +22,7 @@ function UpdatePost() {
         axios.get(`http://localhost:4000/posts/${id}`).then((response) => {
             postTitle.current.value = response.data.title;
             postDesc.current.value = response.data.body;
+            createdate.current = response.data.createDate;
         });
     }, []);
 
@@ -32,6 +37,8 @@ function UpdatePost() {
             var payload = {
                 title: postTitle.current.value,
                 body: postDesc.current.value,
+                createDate : createdate.current,
+                modifyDate : updateDate.toLocaleString()
             };
 
             axios.put(`http://localhost:4000/posts/${id}`, payload).then((response) => {

@@ -9,6 +9,9 @@ function CreatePost() {
 
     const navigate = useNavigate();
 
+    let createDate = new Date()
+    console.log(createDate.toLocaleString())
+
     // create post logic here
 
     const addPostHandler = () => {
@@ -20,6 +23,8 @@ function CreatePost() {
             var payload = {
                 title: postTitle.current.value,
                 body: postBody.current.value,
+                createDate : createDate.toLocaleString(),
+                modifyDate : ""
             };
             axios.post("http://localhost:4000/posts", payload).then(() => {
                 navigate("/");
